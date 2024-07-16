@@ -16,14 +16,20 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
         type: 'postgres',
-        host: configService.get<string>('DB_HOST'),
-        port: configService.get<number>('DB_PORT'),
-        username: configService.get<string>('DB_USERNAME'),
-        password: configService.get<string>('DB_PASSWORD'),
-        database: configService.get<string>('DB_DATABASE'),
+        url: configService.get<string>('POSTGRES_URL'),
+        // host: configService.get<string>('DB_HOST'),
+        // port: configService.get<number>('DB_PORT'),
+        // username: configService.get<string>('DB_USERNAME'),
+        // password: configService.get<string>('DB_PASSWORD'),
+        // database: configService.get<string>('DB_DATABASE'),
         autoLoadEntities: true,
         synchronize: true,
         logging: ['error'],
+        extra: {
+          ssl: {
+            rejectUnauthorized: false, // Importante para aceptar certificados SSL auto-firmados
+          },
+        },
       }),
       inject: [ConfigService],
     }),
